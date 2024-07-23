@@ -8,11 +8,12 @@
         "QV_": null
     },
     "avg_creation_times": [
-        0.04160801569620768
+        0.03747399648030599
     ],
     "avg_elapsed_times": [
-        0.19179145495096842
+        0.19619274139404297
     ],
+    "avg_quantum_times": [],
     "avg_circuit_depths": [
         7.0
     ],
@@ -32,7 +33,7 @@
         254
     ],
     "max_memory": [
-        269.82421875
+        270.99609375
     ],
     "Average_fidelity": [
         0.9997519184817193
@@ -40,5 +41,5 @@
     "Average_Hellinger_fidelity": [
         0.9997829286715044
     ],
-    "last_updated": "2024-07-19 11:23:58"
+    "last_updated": "2024-07-23 14:54:07"
 }
