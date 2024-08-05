@@ -21,7 +21,7 @@ The above step creates new anaconda environment with name **qiskit** and activat
 **Step-2 :** Installing **Qiskit**
 
 ```bash
-pip install numpy matplotlib notebook
+pip install numpy matplotlib notebook openpyxl pandas
 pip install qiskit==0.46.1 
 pip install qiskit-ibm-runtime==0.20.0 
 pip install qiskit-aer==0.13.3
