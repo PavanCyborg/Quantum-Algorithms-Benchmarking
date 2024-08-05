@@ -1,0 +1,116 @@
+{
+    "configuration": {
+        "min_qbits": 3,
+        "max_qbits": 5,
+        "skp_qubits": 1,
+        "num_ckts": [
+            2,
+            3,
+            3
+        ],
+        "Type_of_Simulator": "ibmq_santiago-1.3.14",
+        "benchmark_name": "Amplitude Estimation",
+        "QV_": 32
+    },
+    "Number of Qubits": [
+        3,
+        4,
+        5
+    ],
+    "avg_creation_times (ms)": [
+        8.896,
+        9.988,
+        14.295
+    ],
+    "std_creation_times (ms)": [
+        0.574,
+        0.3,
+        0.975
+    ],
+    "avg_elapsed_times (ms)": [
+        106.645,
+        54.256,
+        55.785
+    ],
+    "std_elapsed_times (ms)": [
+        23.629,
+        8.735,
+        0.895
+    ],
+    "avg_quantum_times (ms)": [
+        65.638,
+        53.928,
+        55.131
+    ],
+    "std_quantum_times (ms)": [
+        9.265,
+        8.744,
+        0.862
+    ],
+    "avg_circuit_depths": [
+        72.0,
+        208.0,
+        479.0
+    ],
+    "avg_transpiled_depths": [
+        97.0,
+        281.667,
+        662.667
+    ],
+    "avg_1Q_algorithmic_gate_counts": [
+        15.0,
+        37.0,
+        79.0
+    ],
+    "avg_2Q_algorithmic_gate_counts": [
+        21.0,
+        62.0,
+        144.0
+    ],
+    "avg_xi (n2q/n1q+n2q)": [
+        0.58,
+        0.63,
+        0.65
+    ],
+    "avg_1Q_Transpiled_gate_counts": [
+        66.5,
+        181.67,
+        411.0
+    ],
+    "avg_2Q_Transpiled_gate_counts": [
+        50.0,
+        159.0,
+        384.67
+    ],
+    "avg_tr_xi (tr_n2q/tr_n1q+tr_n2q)": [
+        0.43,
+        0.47,
+        0.48
+    ],
+    "max_memory (MB)": [
+        203.68,
+        206.11,
+        211.36
+    ],
+    "Average_Rescaled_fidelity": [
+        0.68,
+        0.35,
+        0.14
+    ],
+    "Average_Hellinger_fidelity": [
+        0.84,
+        0.63,
+        0.36
+    ],
+    "std_Rescaled_Fidelity": [
+        0.036,
+        0.032,
+        0.012
+    ],
+    "std_hellinger_fidelity": [
+        0.018,
+        0.024,
+        0.009
+    ],
+    "last_updated": "2024-08-05 10:29:51"
+}
