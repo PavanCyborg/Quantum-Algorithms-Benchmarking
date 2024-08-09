@@ -1,0 +1,153 @@
+{
+    "configuration": {
+        "min_qbits": 4,
+        "max_qbits": 12,
+        "skp_qubits": 2,
+        "num_ckts": [
+            2,
+            2,
+            2,
+            2,
+            2
+        ],
+        "Type_of_Simulator": "dm_simulator",
+        "benchmark_name": "Hidden Shift",
+        "QV_": null,
+        "Processor": "12th Gen Intel(R) Core(TM) i9-12900",
+        "cores": 24
+    },
+    "Number of Qubits": [
+        4,
+        6,
+        8,
+        10,
+        12
+    ],
+    "avg_creation_times (ms)": [
+        2.398,
+        1.068,
+        0.986,
+        1.23,
+        1.408
+    ],
+    "std_creation_times (ms)": [
+        0.455,
+        0.046,
+        0.019,
+        0.004,
+        0.011
+    ],
+    "avg_elapsed_times (ms)": [
+        23.194,
+        52.317,
+        700.351,
+        13247.969,
+        250104.053
+    ],
+    "std_elapsed_times (ms)": [
+        0.06,
+        0.184,
+        0.206,
+        37.097,
+        376.744
+    ],
+    "avg_quantum_times (ms)": [
+        6.431,
+        36.548,
+        681.313,
+        13220.394,
+        250003.032
+    ],
+    "std_quantum_times (ms)": [
+        0.136,
+        0.078,
+        0.245,
+        36.799,
+        375.372
+    ],
+    "avg_circuit_depths": [
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0
+    ],
+    "avg_transpiled_depths": [
+        24.0,
+        24.0,
+        24.0,
+        24.0,
+        24.0
+    ],
+    "Average_Rescaled_fidelity": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "Average_Hellinger_fidelity": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "std_Rescaled_Fidelity": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "std_hellinger_fidelity": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "avg_1Q_algorithmic_gate_counts": [
+        15.0,
+        25.0,
+        30.0,
+        43.0,
+        48.0
+    ],
+    "avg_2Q_algorithmic_gate_counts": [
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0
+    ],
+    "avg_xi (n2q/n1q+n2q)": [
+        0.21,
+        0.19,
+        0.21,
+        0.19,
+        0.2
+    ],
+    "avg_1Q_Transpiled_gate_counts": [
+        62.0,
+        93.0,
+        124.0,
+        158.0,
+        183.0
+    ],
+    "avg_2Q_Transpiled_gate_counts": [
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0
+    ],
+    "avg_tr_xi (tr_n2q/tr_n1q+tr_n2q)": [
+        0.06,
+        0.06,
+        0.06,
+        0.06,
+        0.06
+    ],
+    "last_updated": "2024-08-08 10:19:38"
+}
