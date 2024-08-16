@@ -13,10 +13,10 @@ def loadDatafromJson():
     return data
 
 def DataExtraction(data):
-    global min_qbits,max_qbits,skp_qubits,Type_of_Simulator,benchmark_name,QV_
-    global avg_creation_times,avg_elapsed_times,avg_quantum_times,avg_circuit_depths,avg_transpiled_depths
-    global avg_1Q_algorithmic_gate_counts,avg_1Q_Transpiled_gate_counts,avg_2Q_algorithmic_gate_counts,avg_2Q_Transpiled_gate_counts
-    global max_memory,avg_f,avg_Hf,last_updated
+    global min_qbits,max_qbits,skp_qubits,Type_of_Simulator,benchmark_name,QV_,Processor,Cores,platform
+    global avg_creation_times,std_creation_times,avg_elapsed_times,std_elapsed_times,avg_quantum_times,std_quantum_times,avg_circuit_depths,avg_transpiled_depths
+    global avg_1Q_algorithmic_gate_counts,avg_1Q_Transpiled_gate_counts,avg_2Q_algorithmic_gate_counts,avg_2Q_Transpiled_gate_counts,avg_xi,avg_tr_xi
+    global max_memory,avg_f,avg_Hf,std_f,std_hf,last_updated,gate_counts_plots,Memory_utilization_plot
     
     # Extract the data 
     configuration= data['configuration']
@@ -24,21 +24,37 @@ def DataExtraction(data):
     max_qbits = configuration['max_qbits']
     skp_qubits = configuration['skp_qubits']
     Type_of_Simulator = configuration['Type_of_Simulator']
+    platform = Type_of_Simulator
     benchmark_name = configuration['benchmark_name']
     QV_ = configuration['QV_']
-    avg_creation_times = data["avg_creation_times"]
-    avg_elapsed_times = data["avg_elapsed_times"]
-    avg_quantum_times = data["avg_quantum_times"]
+    Processor = configuration['Processor']
+    Cores = configuration['cores']
+    avg_creation_times = data["avg_creation_times (ms)"]
+    std_creation_times =data["std_creation_times (ms)"]
+    avg_elapsed_times = data["avg_elapsed_times (ms)"]
+    std_elapsed_times = data["std_elapsed_times (ms)"]
+    avg_quantum_times = data["avg_quantum_times (ms)"]
+    std_quantum_times = data["std_quantum_times (ms)"]
     avg_circuit_depths = data["avg_circuit_depths"]
     avg_transpiled_depths = data["avg_transpiled_depths"]
     avg_1Q_algorithmic_gate_counts = data["avg_1Q_algorithmic_gate_counts"]
     avg_2Q_algorithmic_gate_counts = data["avg_2Q_algorithmic_gate_counts"]
+    avg_xi = data["avg_xi (n2q/n1q+n2q)"]
     avg_1Q_Transpiled_gate_counts = data["avg_1Q_Transpiled_gate_counts"]
     avg_2Q_Transpiled_gate_counts = data["avg_2Q_Transpiled_gate_counts"]
-    max_memory = data["max_memory"]
-    avg_f=data["Average_fidelity"]
+    avg_tr_xi = data["avg_tr_xi (tr_n2q/tr_n1q+tr_n2q)"]
+    max_memory = data["max_memory (MB)"]
+    avg_f=data["Average_Rescaled_fidelity"]
     avg_Hf=data["Average_Hellinger_fidelity"]
-    last_updated = data["last_updated"]
+    std_f = data["std_Rescaled_Fidelity"]
+    std_hf = data["std_hellinger_fidelity"]
+    gate_counts_plots = data["gate_counts_plots"] 
+    last_updated = data['last_updated']
+    
+    if len(max_memory)==0:
+        Memory_utilization_plot = False
+    else:
+        Memory_utilization_plot = False
     
     print("Data extraction complete.")
     print("Data Last updated on :", last_updated)
@@ -51,157 +67,127 @@ def Plot_General_Benchmarks():
     # Define the range of qubits for the x-axis
     num_qubits_range = range(min_qbits, max_qbits+1,skp_qubits)
     print("num_qubits_range =",num_qubits_range)
-    
+
+    # Plot histograms for average creation time, average elapsed time, average quantum processing time, and average circuit depth versus the number of qubits
+
     # Add labels to the bars
     def autolabel(rects,ax,str='{:.3f}',text_color="black"):
-        max_y_value=ax.get_ylim()[1]  # Get the maximum value on the y-axis
-        threshold=0.3*max_y_value   # Define threshold as 30% of max y-axis value
-        for rect in rects:
-            height = rect.get_height()
-            if height < threshold:
-                rotation = 0
-                va = 'bottom'  # Place text above the bar
-                xytext = (0, 3)  # Offset slightly above the bar
-            else:
-                rotation = 90
-                va = 'center'  # Place text inside the bar
-                xytext = (0, 0)  # No offset
-            ax.annotate(str.format(height),  # Formatting to two decimal places
-                        xy=(rect.get_x() + rect.get_width() / 2, height / 2),
-                        xytext=xytext,
-                        textcoords="offset points",
-                        ha='center', va=va, color=text_color, rotation=rotation)
-
+            max_y_value=ax.get_ylim()[1]  # Get the maximum value on the y-axis
+            threshold=0.3*max_y_value   # Define threshold as 30% of max y-axis value
+            for rect in rects:
+                height = rect.get_height()
+                if height < threshold:
+                    rotation = 90
+                    va = 'bottom'  # Place text above the bar
+                    xytext = (0, 3)  # Offset slightly above the bar
+                else:
+                    rotation = 90
+                    va = 'center'  # Place text inside the bar
+                    xytext = (0, 0)  # No offset
+                ax.annotate(str.format(height),  # Formatting to two decimal places
+                            xy=(rect.get_x() + rect.get_width() / 2, height/6),
+                            xytext=xytext,
+                            textcoords="offset points",
+                            ha='center', va=va, color=text_color, rotation=rotation)
+    
     bar_width = 0.3
-
-    if len(max_memory)!=0:
-        Memory_utilization_plot = True
-    else:
-        Memory_utilization_plot = False
-
-    if (len(avg_1Q_algorithmic_gate_counts)!=0 and len(avg_1Q_Transpiled_gate_counts)!=0 
-        and len(avg_2Q_algorithmic_gate_counts)!=0 and len(avg_2Q_Transpiled_gate_counts)!=0):
-        gate_counts_plots = True
-    else:
-        gate_counts_plots = False
     
     # Determine the number of subplots and their arrangement
     if Memory_utilization_plot and gate_counts_plots:
-        fig, (ax1, ax2, ax3, ax4, ax5, ax6, ax7) = plt.subplots(7, 1, figsize=(15, 20))
+        fig, (ax1, ax2, ax3, ax4, ax5, ax6, ax7) = plt.subplots(7, 1, figsize=(18, 30))
         # Plotting for both memory utilization and gate counts
         # ax1, ax2, ax3, ax4, ax5, ax6, ax7 are available
     elif Memory_utilization_plot:
-        fig, (ax1, ax2, ax3, ax6, ax7) = plt.subplots(5, 1, figsize=(8, 13))
+        fig, (ax1, ax2, ax3, ax6, ax7) = plt.subplots(5, 1, figsize=(18, 30))
         # Plotting for memory utilization only
         # ax1, ax2, ax3, ax6, ax7 are available
     elif gate_counts_plots:
-        fig, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, 1, figsize=(15, 20))
+        fig, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, 1, figsize=(18, 30))
         # Plotting for gate counts only
         # ax1, ax2, ax3, ax4, ax5, ax6 are available
     else:
-        fig, (ax1, ax2, ax3, ax6) = plt.subplots(4, 1, figsize=(15, 20))
+        fig, (ax1, ax2, ax3, ax6) = plt.subplots(4, 1, figsize=(18, 30))
         # Default plotting
         # ax1, ax2, ax3, ax6 are available
     
-    fig.suptitle(f"General Benchmarks : {Type_of_Simulator} - {benchmark_name}  Last-Recorded :{last_updated}", fontsize=13)
-    for i in range(len(avg_creation_times)): #converting seconds to milli seconds by multiplying 1000
-        avg_creation_times[i] *= 1000
+    fig.suptitle(f"General Benchmarks : {platform} - {benchmark_name} - {Processor}", fontsize=16)
+    
     
     ax1.set_xticks(range(min(num_qubits_range), max(num_qubits_range)+1, skp_qubits))
-    x = ax1.bar(num_qubits_range, avg_creation_times, color='deepskyblue')
+    x = ax1.bar(num_qubits_range, avg_creation_times, yerr=std_creation_times, capsize=15, color='deepskyblue')
     autolabel(ax1.patches, ax1)
-    ax1.set_xlabel('Number of Qubits',fontsize=9)
-    ax1.set_ylabel('Average Creation Time (ms)',fontsize=9)
-    ax1.set_title('Average Creation Time vs Number of Qubits',fontsize=9)
+    ax1.set_xlabel('Number of Qubits')
+    ax1.set_ylabel('Average Creation Time (ms)')
+    ax1.set_title('Average Creation Time vs Number of Qubits',fontsize=14)
     
     
     ax2.set_xticks(range(min(num_qubits_range), max(num_qubits_range)+1, skp_qubits))
-    if len(avg_elapsed_times)!=0:
-        for i in range(len(avg_elapsed_times)): #converting seconds to milli seconds by multiplying 1000
-            avg_elapsed_times[i] *= 1000
-        Elapsed= ax2.bar(np.array(num_qubits_range) - bar_width/2, avg_elapsed_times, width=bar_width, color='cyan', label='Elapsed Time')
-        autolabel(Elapsed,ax2,str='{:.1f}')
-
-    if len(avg_quantum_times)!=0:
-        for i in range(len(avg_quantum_times)): #converting seconds to milli seconds by multiplying 1000
-            avg_quantum_times[i] *= 1000
-        Quantum= ax2.bar(np.array(num_qubits_range) + bar_width / 2, avg_quantum_times,width=bar_width, color='deepskyblue',label ='Quantum Time')
-        autolabel(Quantum,ax2,str='{:.1f}')
     
-    ax2.set_xlabel('Number of Qubits',fontsize=9)
-    ax2.set_ylabel('Average Time (ms)',fontsize=9)
-    ax2.set_title('Average Time vs Number of Qubits',fontsize=9)
+    
+    Elapsed= ax2.bar(np.array(num_qubits_range) - bar_width / 2, avg_elapsed_times,yerr=std_elapsed_times, capsize=15, width=bar_width, color='cyan', label='Elapsed Time')
+    Quantum= ax2.bar(np.array(num_qubits_range) + bar_width / 2, avg_quantum_times,yerr=std_quantum_times, capsize=15,width=bar_width, color='deepskyblue',label ='Quantum Time')
+    autolabel(Elapsed,ax2,str='{:.1f}')
+    autolabel(Quantum,ax2,str='{:.1f}')
+    ax2.set_xlabel('Number of Qubits')
+    ax2.set_ylabel('Average Time (ms)')
+    ax2.set_title('Average Time vs Number of Qubits')
     ax2.legend()
     
-    ax3.set_xticks(range(min(num_qubits_range), max(num_qubits_range)+1, skp_qubits))
-    if len(avg_transpiled_depths)!=0:
-        Normalized = ax3.bar(np.array(num_qubits_range) - bar_width / 2, avg_transpiled_depths, 
-                             color='cyan', label='Normalized Depth', width=bar_width) 
-        autolabel(Normalized,ax3,str='{:.2f}')
-    if len(avg_circuit_depths)!=0:
-        Algorithmic = ax3.bar(np.array(num_qubits_range) + bar_width / 2,avg_circuit_depths, 
-                              color='deepskyblue', label='Algorithmic Depth', width=bar_width)  
-        autolabel(Algorithmic,ax3,str='{:.2f}')
     
-    ax3.set_xlabel('Number of Qubits',fontsize=9)
-    ax3.set_ylabel('Average Circuit Depth',fontsize=9)
-    ax3.set_title('Average Circuit Depth vs Number of Qubits',fontsize=9)
+    ax3.set_xticks(range(min(num_qubits_range), max(num_qubits_range)+1, skp_qubits))
+    Normalized = ax3.bar(np.array(num_qubits_range) - bar_width / 2, avg_transpiled_depths, color='cyan', label='Normalized Depth', width=bar_width)  # Adjust width here
+    Algorithmic = ax3.bar(np.array(num_qubits_range) + bar_width / 2,avg_circuit_depths, color='deepskyblue', label='Algorithmic Depth', width=bar_width)  # Adjust width here
+    autolabel(Normalized,ax3,str='{:.2f}')
+    autolabel(Algorithmic,ax3,str='{:.2f}')
+    ax3.set_xlabel('Number of Qubits')
+    ax3.set_ylabel('Average Circuit Depth')
+    ax3.set_title('Average Circuit Depth vs Number of Qubits')
     ax3.legend()
     
-    if gate_counts_plots==True:
+    if gate_counts_plots == True:
         ax4.set_xticks(range(min(num_qubits_range), max(num_qubits_range)+1, skp_qubits))
-        if len(avg_1Q_Transpiled_gate_counts)!=0:
-            Normalized_1Q_counts = ax4.bar(np.array(num_qubits_range) - bar_width / 2, avg_1Q_Transpiled_gate_counts,
-                                           color='cyan', label='Normalized Gate Counts', width=bar_width)  
-            autolabel(Normalized_1Q_counts,ax4,str='{}')
-        if len(avg_1Q_algorithmic_gate_counts)!=0:
-            Algorithmic_1Q_counts = ax4.bar(np.array(num_qubits_range) + bar_width / 2, avg_1Q_algorithmic_gate_counts,
-                                            color='deepskyblue', label='Algorithmic Gate Counts', width=bar_width)  
-            autolabel(Algorithmic_1Q_counts,ax4,str='{}')
-    
-        ax4.set_xlabel('Number of Qubits',fontsize=9)
-        ax4.set_ylabel('Average 1-Qubit Gate Counts',fontsize=9)
-        ax4.set_title('Average 1-Qubit Gate Counts vs Number of Qubits',fontsize=9)
+        Normalized_1Q_counts = ax4.bar(np.array(num_qubits_range) - bar_width / 2, avg_1Q_Transpiled_gate_counts, color='cyan', label='Normalized Gate Counts', width=bar_width)  # Adjust width here
+        Algorithmic_1Q_counts = ax4.bar(np.array(num_qubits_range) + bar_width / 2, avg_1Q_algorithmic_gate_counts, color='deepskyblue', label='Algorithmic Gate Counts', width=bar_width)  # Adjust width here
+        autolabel(Normalized_1Q_counts,ax4,str='{}')
+        autolabel(Algorithmic_1Q_counts,ax4,str='{}')
+        ax4.set_xlabel('Number of Qubits')
+        ax4.set_ylabel('Average 1-Qubit Gate Counts')
+        ax4.set_title('Average 1-Qubit Gate Counts vs Number of Qubits')
         ax4.legend()
         
         ax5.set_xticks(range(min(num_qubits_range), max(num_qubits_range)+1, skp_qubits))
-        if len(avg_2Q_Transpiled_gate_counts)!=0:
-            Normalized_2Q_counts = ax5.bar(np.array(num_qubits_range) - bar_width / 2, avg_2Q_Transpiled_gate_counts,
-                                           color='cyan', label='Normalized Gate Counts', width=bar_width) 
-            autolabel(Normalized_2Q_counts,ax5,str='{}')
-        if len(avg_2Q_algorithmic_gate_counts)!=0:
-            Algorithmic_2Q_counts = ax5.bar(np.array(num_qubits_range) + bar_width / 2, avg_2Q_algorithmic_gate_counts, 
-                                            color='deepskyblue', label='Algorithmic Gate Counts', width=bar_width)  
-            autolabel(Algorithmic_2Q_counts,ax5,str='{}')
-        
-        ax5.set_xlabel('Number of Qubits',fontsize=9)
-        ax5.set_ylabel('Average 2-Qubit Gate Counts',fontsize=9)
-        ax5.set_title('Average 2-Qubit Gate Counts vs Number of Qubits',fontsize=9)
+        Normalized_2Q_counts = ax5.bar(np.array(num_qubits_range) - bar_width / 2, avg_2Q_Transpiled_gate_counts, color='cyan', label='Normalized Gate Counts', width=bar_width)  # Adjust width here
+        Algorithmic_2Q_counts = ax5.bar(np.array(num_qubits_range) + bar_width / 2, avg_2Q_algorithmic_gate_counts, color='deepskyblue', label='Algorithmic Gate Counts', width=bar_width)  # Adjust width here
+        autolabel(Normalized_2Q_counts,ax5,str='{}')
+        autolabel(Algorithmic_2Q_counts,ax5,str='{}')
+        ax5.set_xlabel('Number of Qubits')
+        ax5.set_ylabel('Average 2-Qubit Gate Counts')
+        ax5.set_title('Average 2-Qubit Gate Counts vs Number of Qubits')
         ax5.legend()
     
     
     ax6.set_xticks(range(min(num_qubits_range), max(num_qubits_range)+1, skp_qubits))
-    Hellinger = ax6.bar(np.array(num_qubits_range) - bar_width / 2, avg_Hf, width=bar_width, label='Hellinger Fidelity',color='cyan') 
-    Normalized = ax6.bar(np.array(num_qubits_range) + bar_width / 2, avg_f, width=bar_width, label='Normalized Fidelity', color='deepskyblue') 
+    Hellinger = ax6.bar(np.array(num_qubits_range) - bar_width / 2, avg_Hf,yerr=std_hf, capsize=15, width=bar_width, label='Hellinger Fidelity',color='cyan')  # Adjust width here
+    Normalized = ax6.bar(np.array(num_qubits_range) + bar_width / 2, avg_f,yerr=std_f, capsize=15, width=bar_width, label='Normalized Fidelity', color='deepskyblue')  # Adjust width here
     autolabel(Hellinger,ax6,str='{:.2f}')
     autolabel(Normalized,ax6,str='{:.2f}')
     ax6.set_xlabel('Number of Qubits')
     ax6.set_ylabel('Average Value')
-    ax6.set_title("Fidelity Comparison",fontsize=9)
+    ax6.set_title("Fidelity Comparison")
     ax6.legend()
     
     if Memory_utilization_plot == True:
         ax7.set_xticks(range(min(num_qubits_range), max(num_qubits_range)+1, skp_qubits))
         x = ax7.bar(num_qubits_range, max_memory, color='turquoise', width=bar_width, label="Memory Utilizations")
         autolabel(ax7.patches, ax7)
-        ax7.set_xlabel('Number of Qubits',fontsize=9)
-        ax7.set_ylabel('Maximum Memory Utilized (MB)',fontsize=9)
-        ax7.set_title('Memory Utilized vs Number of Qubits',fontsize=9)
+        ax7.set_xlabel('Number of Qubits')
+        ax7.set_ylabel('Maximum Memory Utilized (MB)')
+        ax7.set_title('Memory Utilized vs Number of Qubits',fontsize=14)
     
     
-    # Adjust layout to avoid overlapping
-    fig.tight_layout(rect=[0, 0, 1, 0.96], h_pad=2.5)
-    plt.subplots_adjust(top=0.92)
+    plt.tight_layout(rect=[0, 0, 1, 0.96])
+    
+    plt.savefig("ParameterPlotsSample.jpg")
     plt.show()
     
 from matplotlib.patches import Rectangle
@@ -372,7 +358,7 @@ def anno_volumetric_data(ax, depth_base=2, label='Depth',
             color=(0.2,0.2,0.2),
             clip_on=True)
     # if saveplots == True:
-    #     plt.savefig("VolumetricPlotSample.jpg")
+    plt.savefig("VolumetricPlotSample.jpg")
     plt.show()
 
 # Plot one group of data for volumetric presentation    
