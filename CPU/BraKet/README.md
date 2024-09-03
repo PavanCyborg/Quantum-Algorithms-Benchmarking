@@ -4,6 +4,12 @@ This Directory consists of framework for various Algorithms being benchmarked on
 
 Here we are using **Braket's Local Simulators** for benchmarking the Quantum Algorithms. All the details about versions of Braket and Other Programs are listed in below table under **"Tested Platform"** Section.
 
+This Benchmarking is based on the implementation of [QC-App-Oriented-Benchmarks](https://github.com/SRI-International/QC-App-Oriented-Benchmarks/tree/master) repository by **SRI-International**.
+
+The QED-C committee that developed these benchmarks released a paper (Oct 2021) describing the theory and methodology supporting this work at [Application-Oriented Performance Benchmarks for Quantum Computing](https://arxiv.org/abs/2110.03137).
+
+For further information please go through the **README** file of the source repository mentioned above.
+
 ## Installation :
 
 Please follow the below procedure for installing required essentials to run the benchmarking Programs. Make sure that you have already installed anaconda in your device.
@@ -48,7 +54,7 @@ AWS-Braket has support for **3** Local simulators. They are:
 
 1. 'braket_dm' $\large\rightarrow$ Density Matrix Simulator
 2. 'braket_sv' $\large\rightarrow$ State-vector Simulator
-3. 'braket_ahs'$\large\rightarrow$ Analog Hamiltonian Simulator
+3. 'braket_ahs' $\large\rightarrow$ Analog Hamiltonian Simulator
 
 There are also an option to pass **'default'** to select default-simulator which is also an **statevector simulator**.
 
@@ -89,6 +95,8 @@ The cells under this section contains all the functions that define the algorith
 ### 5. **Noise Parameters :**
 
 This section consists of noise parameters that are added for performing benchmarks in their presence. These noise parameters are only applicable when executing the benchmarks with **'braket_dm'** simulator.
+
+   - To Know more information about Noise parameters in Braket, please go through [this repository](https://github.com/amazon-braket/amazon-braket-examples/blob/main/examples/braket_features/Simulating_Noise_On_Amazon_Braket.ipynb)
 
 ### 6. **Fidelity Calculations :**
 
