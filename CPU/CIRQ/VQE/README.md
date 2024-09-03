@@ -1,1 +1,0 @@
-VQE for CIRQ is **yet to be implemented**.
