@@ -1,0 +1,119 @@
+{
+    "configuration": {
+        "min_qbits": 3,
+        "max_qbits": 5,
+        "skp_qubits": 1,
+        "num_ckts": [
+            2,
+            2,
+            2
+        ],
+        "Type_of_Simulator": "DensityMatrixSimulator",
+        "benchmark_name": "Grover's Search",
+        "QV_": null,
+        "Processor": "12th Gen Intel(R) Core(TM) i9-12900",
+        "cores": 24
+    },
+    "Number of Qubits": [
+        3,
+        4,
+        5
+    ],
+    "avg_creation_times (ms)": [
+        6.653,
+        6.708,
+        14.617
+    ],
+    "std_creation_times (ms)": [
+        1.607,
+        0.133,
+        0.171
+    ],
+    "avg_elapsed_times (ms)": [
+        495.113,
+        1266.643,
+        3192.694
+    ],
+    "std_elapsed_times (ms)": [
+        20.84,
+        5.479,
+        12.497
+    ],
+    "avg_quantum_times (ms)": [
+        495.112,
+        1266.641,
+        3192.693
+    ],
+    "std_quantum_times (ms)": [
+        20.84,
+        5.479,
+        12.497
+    ],
+    "avg_circuit_depths": [
+        47.0,
+        118.0,
+        285.0
+    ],
+    "avg_transpiled_depths": [
+        47.0,
+        118.0,
+        285.0
+    ],
+    "Average_Rescaled_fidelity": [
+        0.04,
+        0.01,
+        0.02
+    ],
+    "Average_Hellinger_fidelity": [
+        0.2,
+        0.11,
+        0.04
+    ],
+    "std_Rescaled_Fidelity": [
+        0.021,
+        0.007,
+        0.01
+    ],
+    "std_hellinger_fidelity": [
+        0.097,
+        0.054,
+        0.022
+    ],
+    "gate_counts_plots": true,
+    "avg_1Q_algorithmic_gate_counts": [
+        49.0,
+        91.0,
+        141.0
+    ],
+    "avg_2Q_algorithmic_gate_counts": [
+        12.0,
+        54.0,
+        168.0
+    ],
+    "avg_xi (n2q/n1q+n2q)": [
+        0.2,
+        0.37,
+        0.54
+    ],
+    "avg_1Q_Transpiled_gate_counts": [
+        49.0,
+        91.0,
+        141.0
+    ],
+    "avg_2Q_Transpiled_gate_counts": [
+        12.0,
+        54.0,
+        168.0
+    ],
+    "avg_tr_xi (tr_n2q/tr_n1q+tr_n2q)": [
+        0.2,
+        0.37,
+        0.54
+    ],
+    "max_memory (MB)": [
+        155.44,
+        160.88,
+        175.13
+    ],
+    "last_updated": "2024-09-02 15:54:30"
+}
