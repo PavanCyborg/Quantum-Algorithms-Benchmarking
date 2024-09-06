@@ -1,0 +1,152 @@
+{
+    "configuration": {
+        "min_qbits": 2,
+        "max_qbits": 11,
+        "skp_qubits": 2,
+        "num_ckts": [
+            2,
+            2,
+            2,
+            2,
+            2
+        ],
+        "Type_of_Simulator": "ionq_simulator-0.0.1--harmony",
+        "benchmark_name": "Hidden Shift",
+        "num_supported_qubits": 35,
+        "QV_": null
+    },
+    "Number of Qubits": [
+        2,
+        4,
+        6,
+        8,
+        10
+    ],
+    "avg_creation_times (ms)": [
+        7.016,
+        6.974,
+        9.014,
+        5.695,
+        8.117
+    ],
+    "std_creation_times (ms)": [
+        1.385,
+        0.034,
+        0.398,
+        0.604,
+        0.231
+    ],
+    "avg_elapsed_times (ms)": [
+        8496.021,
+        7526.455,
+        20641.029,
+        9858.213,
+        6868.758
+    ],
+    "std_elapsed_times (ms)": [
+        313.816,
+        160.668,
+        929.574,
+        753.04,
+        14.592
+    ],
+    "avg_quantum_times (ms)": [
+        73.0,
+        76.5,
+        75.5,
+        88.5,
+        127.5
+    ],
+    "std_quantum_times (ms)": [
+        0.316,
+        0.474,
+        0.158,
+        0.158,
+        0.158
+    ],
+    "avg_circuit_depths": [
+        8.0,
+        8.0,
+        8.0,
+        8.0,
+        8.0
+    ],
+    "avg_transpiled_depths": [
+        15.0,
+        16.0,
+        17.0,
+        17.0,
+        17.0
+    ],
+    "Average_Rescaled_fidelity": [
+        0.89,
+        0.83,
+        0.78,
+        0.71,
+        0.65
+    ],
+    "Average_Hellinger_fidelity": [
+        0.92,
+        0.84,
+        0.78,
+        0.71,
+        0.65
+    ],
+    "std_Rescaled_Fidelity": [
+        0.003,
+        0.001,
+        0.011,
+        0.005,
+        0.002
+    ],
+    "std_hellinger_fidelity": [
+        0.002,
+        0.001,
+        0.011,
+        0.005,
+        0.002
+    ],
+    "avg_1Q_algorithmic_gate_counts": [
+        9.0,
+        15.0,
+        26.0,
+        30.0,
+        43.0
+    ],
+    "avg_2Q_algorithmic_gate_counts": [
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0
+    ],
+    "avg_xi (n2q/n1q+n2q)": [
+        0.18,
+        0.21,
+        0.19,
+        0.21,
+        0.19
+    ],
+    "avg_1Q_Transpiled_gate_counts": [
+        19.0,
+        39.0,
+        60.0,
+        82.0,
+        103.0
+    ],
+    "avg_2Q_Transpiled_gate_counts": [
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0
+    ],
+    "avg_tr_xi (tr_n2q/tr_n1q+tr_n2q)": [
+        0.1,
+        0.09,
+        0.09,
+        0.09,
+        0.09
+    ],
+    "last_updated": "2024-09-06 16:01:43"
+}
